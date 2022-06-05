@@ -2,7 +2,7 @@
 {
     internal class DatabaseSettings : IDatabaseSettings
     {
-        public string CourseCategoryName { get; set; }
+        public string CourseCollectionName { get; set; }
 
         public string CategoryCollectionName { get; set; }
 

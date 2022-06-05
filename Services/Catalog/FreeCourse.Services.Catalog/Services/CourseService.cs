@@ -20,7 +20,7 @@ namespace FreeCourse.Services.Catalog.Services
             var client = new MongoClient(databaseSettings.ConnectionString);
             var database = client.GetDatabase(databaseSettings.DatabaseName);
 
-            _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCategoryName);
+            _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCollectionName);
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
             _mapper = mapper;
         }
@@ -32,7 +32,7 @@ namespace FreeCourse.Services.Catalog.Services
             if (courses.Any())
                 courses.ForEach(async course =>
                 {
-                    course.Category = await _categoryCollection.Find(c => c.Equals(course.CategoryId)).SingleOrDefaultAsync();
+                    course.Category = await _categoryCollection.Find(c => c.Id.Equals(course.CategoryId)).FirstOrDefaultAsync();
                 });
 
             return Response<IEnumerable<CourseDto>>.Success(_mapper.Map<IEnumerable<CourseDto>>(courses), HttpStatusCode.OK);
@@ -54,13 +54,11 @@ namespace FreeCourse.Services.Catalog.Services
         {
             var courses = await _courseCollection.Find(c => c.UserId.Equals(userId)).ToListAsync();
 
-            if (!courses.Any())
-                return Response<IEnumerable<CourseDto>>.Fail("There are no courses", HttpStatusCode.NotFound);
-
-            courses.ForEach(async course =>
-            {
-                course.Category = await _categoryCollection.Find(category => category.Equals(course.CategoryId)).SingleOrDefaultAsync();
-            });
+            if (courses.Any())
+                courses.ForEach(async course =>
+                {
+                    course.Category = await _categoryCollection.Find(c => c.Id.Equals(course.CategoryId)).FirstOrDefaultAsync();
+                });
 
             return Response<IEnumerable<CourseDto>>.Success(_mapper.Map<IEnumerable<CourseDto>>(courses), HttpStatusCode.OK);
         }

@@ -23,11 +23,11 @@ namespace FreeCourse.Services.Catalog.Services
             _mapper = mapper;
         }
 
-        public async Task<Response<IEnumerable<CourseDto>>> GetAllAsync()
+        public async Task<Response<IEnumerable<CategoryDto>>> GetAllAsync()
         {
             var categories = await _categoryCollection.Find(category => true).ToListAsync();
 
-            return Response<IEnumerable<CourseDto>>.Success(_mapper.Map<IEnumerable<CourseDto>>(categories), HttpStatusCode.OK);
+            return Response<IEnumerable<CategoryDto>>.Success(_mapper.Map<IEnumerable<CategoryDto>>(categories), HttpStatusCode.OK);
         }
 
         public async Task<Response<CategoryDto>> CreateAsync(CategoryDto categoryDto)
