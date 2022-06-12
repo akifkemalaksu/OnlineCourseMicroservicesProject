@@ -15,3 +15,5 @@
 - Domain Driven Design
 - CQRS Pattern
 - Token / Refresh Token / Access Token
+
+Eğitimde üretilmesi hedeflenen proje, Udemy benzeri online eğitim sistemi tasarlamak.
