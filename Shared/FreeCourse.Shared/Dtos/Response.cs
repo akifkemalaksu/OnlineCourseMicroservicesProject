@@ -23,17 +23,17 @@ namespace FreeCourse.Shared.Dtos
         // Static Factory Method
         public static Response<T> Success(T data, HttpStatusCode statusCode)
         {
-            return new() { Data = data, StatusCode = statusCode, IsSuccessful = true };
+            return new Response<T>() { Data = data, StatusCode = statusCode, IsSuccessful = true };
         }
 
         public static Response<T> Success(HttpStatusCode statusCode)
         {
-            return new() { Data = default(T), StatusCode = statusCode, IsSuccessful = true };
+            return new Response<T>() { Data = default(T), StatusCode = statusCode, IsSuccessful = true };
         }
 
         public static Response<T> Fail(List<string> errors, HttpStatusCode statusCode)
         {
-            return new()
+            return new Response<T>()
             {
                 Errors = errors,
                 StatusCode = statusCode,
@@ -43,9 +43,9 @@ namespace FreeCourse.Shared.Dtos
 
         public static Response<T> Fail(string error, HttpStatusCode statusCode)
         {
-            return new()
+            return new Response<T>()
             {
-                Errors = new() { error },
+                Errors = new List<string>() { error },
                 StatusCode = statusCode,
                 IsSuccessful = false
             };
