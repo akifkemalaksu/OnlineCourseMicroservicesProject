@@ -2,11 +2,11 @@
 
 namespace FreeCourse.Shared.Services
 {
-    public class SharedIdentityServices : ISharedIdentityServices
+    public class SharedIdentityService : ISharedIdentityService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SharedIdentityServices(IHttpContextAccessor httpContextAccessor)
+        public SharedIdentityService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
         }

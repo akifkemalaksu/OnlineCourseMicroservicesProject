@@ -1,10 +1,10 @@
-using FreeCourse.Services.Basket.Services;
-using FreeCourse.Services.Basket.Settings;
+using FreeCourse.Services.Order.Infrastructure;
 using FreeCourse.Shared.Services;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -17,26 +17,23 @@ JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.Authority = builder.Configuration["IdentityServerUrl"];
-    options.Audience = "resource_basket";
+    options.Audience = "resource_order";
     options.RequireHttpsMetadata = false;
 });
-
-builder.Services.Configure<RedisSettings>(builder.Configuration.GetSection(nameof(RedisSettings)));
 
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddSingleton(sp =>
+builder.Services.AddDbContext<OrderDbContext>(opt =>
 {
-    var redisSettings = sp.GetRequiredService<IOptions<RedisSettings>>().Value;
-    var redis = new RedisService(redisSettings.Host, redisSettings.Port);
-    redis.Connect();
-
-    return redis;
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), configure =>
+    {
+        configure.MigrationsAssembly("FreeCourse.Services.Order.Infrastructure");
+    });
 });
 
-builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddMediatR(typeof(FreeCourse.Services.Order.Application.Handlers.CreateOrderCommandHandler).Assembly);
 builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
 builder.Services.AddControllers(options =>

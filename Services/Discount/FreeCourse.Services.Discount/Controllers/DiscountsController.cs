@@ -11,9 +11,9 @@ namespace FreeCourse.Services.Discount.Controllers
     public class DiscountsController : CustomControllerBase
     {
         private readonly IDiscountService _discountService;
-        private readonly ISharedIdentityServices _sharedIdentityServices;
+        private readonly ISharedIdentityService _sharedIdentityServices;
 
-        public DiscountsController(IDiscountService discountService, ISharedIdentityServices sharedIdentityServices)
+        public DiscountsController(IDiscountService discountService, ISharedIdentityService sharedIdentityServices)
         {
             _discountService = discountService;
             _sharedIdentityServices = sharedIdentityServices;

@@ -25,15 +25,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
 });
-
-builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
-builder.Services.AddScoped<IDiscountService, DiscountService>();
-builder.Services.AddScoped<ISharedIdentityServices, SharedIdentityServices>();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
