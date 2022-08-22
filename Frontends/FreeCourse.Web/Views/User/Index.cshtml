@@ -1,0 +1,28 @@
+﻿@model UserViewModel
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"> Kullanıcı Bilgileri </h5>
+
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <td scope="col"> Kullanıcı Adı </td>
+                        <td scope="row"> @Model.UserName </td>
+                    </tr>
+
+                    <tr>
+                        <td scope="col"> Email </td>
+                        <td scope="row"> @Model.Email </td>
+                    </tr>
+
+                    <tr>
+                        <td scope="col"> Şehir </td>
+                        <td scope="row"> @Model.City </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
