@@ -1,12 +1,16 @@
-﻿@model List<CourseViewModel>
+﻿@{
+    ViewData["Title"] = "Index";
+}
 
-
+@model List<CourseViewModel>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title"> Kurslar </h5>
+
+                <a asp-controller="Courses" asp-action="Create" class="btn btn-primary mb-3"> Kurs Oluştur </a>
 
                 @if (Model.Any())
                 {

@@ -2,6 +2,7 @@
 using FreeCourse.Web.Models;
 using FreeCourse.Web.Models.Catalogs;
 using FreeCourse.Web.Services.Interfaces;
+using System.Text.Json;
 
 namespace FreeCourse.Web.Services
 {
@@ -56,19 +57,19 @@ namespace FreeCourse.Web.Services
 
         public async Task<bool> CreateCourseAsync(CourseCreateInput courseCreateInput)
         {
-            var response = await _httpClient.PostAsJsonAsync("categories", courseCreateInput);
+            var response = await _httpClient.PostAsJsonAsync("courses", courseCreateInput);
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> DeleteCourseAsync(string courseId)
         {
-            var response = await _httpClient.DeleteAsync($"categories{courseId}");
+            var response = await _httpClient.DeleteAsync($"courses{courseId}");
             return response.IsSuccessStatusCode;
         }
 
         public async Task<bool> UpdateCourseAsync(CourseUpdateInput courseUpdateInput)
         {
-            var response = await _httpClient.PutAsJsonAsync("categories", courseUpdateInput);
+            var response = await _httpClient.PutAsJsonAsync("courses", courseUpdateInput);
             return response.IsSuccessStatusCode;
         }
     }
