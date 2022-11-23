@@ -10,13 +10,13 @@ namespace FreeCourse.Shared.Dtos
 {
     public class Response<T>
     {
-        public T Data { get; private set; }
+        public T Data { get; set; }
 
         [JsonIgnore]
-        public HttpStatusCode StatusCode { get; private set; }
+        public HttpStatusCode StatusCode { get; set; }
 
         [JsonIgnore]
-        public bool IsSuccessful { get; private set; }
+        public bool IsSuccessful { get; set; }
 
         public List<string> Errors { get; set; }
 
