@@ -22,6 +22,8 @@
                                 <th scope="col">Kurs İsmi</th>
                                 <th scope="col">Fiyat</th>
                                 <th scope="col">Süre</th>
+                                <th scope="col">Kategori</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,6 +34,11 @@
                                     <td>@course.Name</td>
                                     <td>@course.Price</td>
                                     <td>@course.Feature.Duration</td>
+                                    <td>@course.Category?.Name</td>
+                                    <td>
+                                        <a asp-controller="courses" asp-action="update" asp-route-id="@course.Id" class="btn btn-success btn-sm"> Güncelle </a>
+                                        <a asp-controller="courses" asp-action="delete" asp-route-id="@course.Id" class="btn btn-danger btn-sm"> Sil </a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>

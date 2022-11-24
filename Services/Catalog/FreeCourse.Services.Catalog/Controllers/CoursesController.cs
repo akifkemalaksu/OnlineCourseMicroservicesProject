@@ -52,7 +52,7 @@ namespace FreeCourse.Services.Catalog.Controllers
             return CreateActionResultInstance(response);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             var response = await _courseService.DeleteAsync(id);

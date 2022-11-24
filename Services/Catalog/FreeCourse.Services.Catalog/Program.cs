@@ -22,7 +22,6 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-//builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
 builder.Services.AddSingleton<IDatabaseSettings>(sp =>

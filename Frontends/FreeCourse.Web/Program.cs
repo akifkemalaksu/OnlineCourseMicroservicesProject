@@ -4,6 +4,7 @@ using FreeCourse.Web.Models;
 using FreeCourse.Web.Services;
 using FreeCourse.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddAccessTokenManagement();
 
 var serviceApiSettings = builder.Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
 
-
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ResourceOwnerPasswordTokenHandler>();
 builder.Services.AddScoped<ClientCredentialTokenHandler>();
 builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
