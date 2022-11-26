@@ -51,7 +51,7 @@ namespace FreeCourse.Web.Services
 
             var token = await _httpClient.RequestRefreshTokenAsync(refreshTokenRequest);
 
-            if (!token.IsError)
+            if (token.IsError)
                 return null;
 
             var authenticationTokens = new List<AuthenticationToken>

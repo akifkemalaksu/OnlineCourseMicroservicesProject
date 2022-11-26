@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FreeCourse.IdentityServer.Services;
+using FreeCourse.IdentityServer.Services.Interfaces;
+using IdentityServer4.Stores;
 
 namespace FreeCourse.IdentityServer
 {
@@ -54,6 +56,9 @@ namespace FreeCourse.IdentityServer
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>();
+
+            services.AddTransient<IPersistedGrantService, PersistedGrantService>();
+            services.AddTransient<IPersistedGrantStore, PersistedGrantStore>();
 
             builder.AddResourceOwnerValidator<IdentityResourceOwnerPasswordValidator>();
 
