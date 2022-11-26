@@ -1,4 +1,5 @@
 ﻿using FreeCourse.Web.Models;
+using FreeCourse.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,16 +7,25 @@ namespace FreeCourse.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly ICatalogService _catalogService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICatalogService catalogService)
         {
+            _catalogService = catalogService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var courses = await _catalogService.GetAllCoursesAsync();
+            return View(courses);
+        }
+
+        public async Task<IActionResult> Detail(string id)
+        {
+            var course = await _catalogService.GetCourseByIdAsync(id);
+            return View(course);
         }
 
         public IActionResult Privacy()

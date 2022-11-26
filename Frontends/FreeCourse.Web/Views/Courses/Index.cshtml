@@ -30,7 +30,7 @@
                             @foreach (var course in Model)
                             {
                                 <tr>
-                                    <td></td>
+                                    <td><img style="width:72px;" src="@course.PhotoWithUrl" class="img-thumbnail" /></td>
                                     <td>@course.Name</td>
                                     <td>@course.Price</td>
                                     <td>@course.Feature.Duration</td>

@@ -16,7 +16,7 @@
                     </div>
 
                     <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="Picture" />
+                    <input type="hidden" asp-for="Photo" />
                     <input type="hidden" asp-for="UserId" value="@sharedIdentityService.GetUserId" />
 
                     <div class="mb-3">
@@ -49,6 +49,11 @@
                         <input asp-for="Feature.Duration" class="form-control" />
 
                         <span class="text-danger" asp-validation-for="Feature.Duration"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PhotoFormFile"></label>
+                        <input type="file" asp-for="PhotoFormFile" class="form-control" />
                     </div>
 
                     <button type="submit" class="btn btn-primary"> Güncelle </button>

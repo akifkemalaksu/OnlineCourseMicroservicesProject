@@ -14,10 +14,12 @@ namespace FreeCourse.Web.Models.Catalogs
         [Required]
         public decimal Price { get; set; }
         public string UserId { get; set; }
-        public string Picture { get; set; }
+        public string Photo { get; set; }
         public FeatureViewModel Feature { get; set; }
         [Display(Name = "Kurs kategorisi")]
         [Required]
         public string CategoryId { get; set; }
+        [Display(Name = "Kurs resmi")]
+        public IFormFile PhotoFormFile { get; set; }
     }
 }

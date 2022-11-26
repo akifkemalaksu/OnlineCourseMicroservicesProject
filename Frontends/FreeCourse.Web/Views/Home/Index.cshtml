@@ -2,7 +2,37 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@model List<CourseViewModel>
+
+<h2> Kurslar </h2>
+<hr />
+
+@if (Model.Any())
+{
+    <div class="container-fluid content-row">
+        @foreach (var item in Model.Select((course, i) => new { course, i }).ToList())
+        {
+            if (item.i % 3 == 0)
+            {
+                @Html.Raw("<div class='row row-cols-1 row-cols-md-3 g-4'>")
+            }
+            <div class="col">
+                <div class="card">
+                    <img src="@item.course.PhotoWithUrl" class="card-img-top" alt="@item.course.Name">
+                    <div class="card-body">
+                        <h5 class="card-title"> @item.course.Name </h5>
+                        <p class="card-text">
+                            @item.course.ShortDescription
+                        </p>
+                        <h4 class="text-primary"> @item.course.Price TL </h4>
+                        <a class="btn btn-success" asp-action="detail" asp-route-id="@item.course.Id"> Detay </a>
+                    </div>
+                </div>
+            </div>
+            if (item.i % 3 == 2)
+            {
+                @Html.Raw("</div>")
+            }
+        }
+    </div>
+}

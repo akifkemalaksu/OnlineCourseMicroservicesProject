@@ -30,7 +30,6 @@ namespace FreeCourse.Web.Controllers
         {
             var categories = await _catalogService.GetAllCategoriesAsync();
             ViewBag.categoryList = new SelectList(categories, "Id", "Name");
-
             return View();
         }
 
@@ -47,7 +46,6 @@ namespace FreeCourse.Web.Controllers
 
             //todo kontrol yap
             await _catalogService.CreateCourseAsync(courseCreateInput);
-
             return RedirectToAction(nameof(Index));
         }
 
@@ -64,8 +62,6 @@ namespace FreeCourse.Web.Controllers
 
             //todo controller ın şişmemesi adına bu servisleri baz alacak ayrı bir servis geliştir.
             var courseUpdateInput = _mapper.Map<CourseUpdateInput>(course);
-            await _catalogService.UpdateCourseAsync(courseUpdateInput);
-
             return View(courseUpdateInput);
         }
 
@@ -79,16 +75,15 @@ namespace FreeCourse.Web.Controllers
                 //todo uyarı geliştir
                 return View();
 
-            await _catalogService.UpdateCourseAsync(courseUpdateInput);
-
             //todo başarılı sonuç ver
+            await _catalogService.UpdateCourseAsync(courseUpdateInput);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(string id)
         {
-            await _catalogService.DeleteCourseAsync(id);
             //todo sonucu client a dön
+            await _catalogService.DeleteCourseAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
