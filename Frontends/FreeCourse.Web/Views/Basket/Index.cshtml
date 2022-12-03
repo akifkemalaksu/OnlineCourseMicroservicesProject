@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@model BasketViewModel
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"> Sepet </h5>
+
+                @if (Model != null && Model.BasketItems.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col"> Kurs isim </th>
+                                <th scope="col"> Kurs fiyat </th>
+                                <th scope="col"> İşlemler </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.BasketItems)
+                            {
+                                <tr>
+                                    <td>@item.CourseName</td>
+                                    <td>@item.GetCurrentPrice TL</td>
+                                    <td>
+                                        <a asp-controller="basket" asp-action="RemoveBasketItem" asp-route-courseId="@item.CourseId" class="btn btn-danger"> Sil </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            @if (Model.HasDiscount)
+                            {
+                                <tr>
+                                    <td> İndirim oranı </td>
+                                    <th scope="col" colspan="2"> @(Model.DiscountRate.Value)% </th>
+                                </tr>
+                            }
+                            <tr>
+                                <td> @(Model.HasDiscount ? "İndirimli fiyat" : "Toplam fiyat") </td>
+                                <th scope="col" colspan="2"> @Model.TotalPrice TL </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-info"> Sepet Boş </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
