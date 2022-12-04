@@ -33,7 +33,8 @@ namespace FreeCourse.Services.Discount.Controllers
             return CreateActionResultInstance(result);
         }
 
-        [HttpGet("/api/[controller]/[action]/{code}")]
+        [HttpGet("GetByCode/{code}")]
+        //[HttpGet("/api/[controller]/[action]/{code}")]
         public async Task<IActionResult> GetByCode(string code)
         {
             var result = await _discountService.GetByCodeAndUserId(code, _sharedIdentityServices.GetUserId);

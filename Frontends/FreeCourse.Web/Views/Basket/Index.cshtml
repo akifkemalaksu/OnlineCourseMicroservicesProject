@@ -40,12 +40,31 @@
                                     <th scope="col" colspan="2"> @(Model.DiscountRate.Value)% </th>
                                 </tr>
                             }
+
                             <tr>
                                 <td> @(Model.HasDiscount ? "İndirimli fiyat" : "Toplam fiyat") </td>
                                 <th scope="col" colspan="2"> @Model.TotalPrice TL </th>
                             </tr>
                         </tfoot>
                     </table>
+
+                    <form asp-controller="basket" asp-action="ApplyDiscount">
+                        @if (Model.HasDiscount)
+                        {
+                            <div class="alert alert-success"> "@Model.DiscountCode" indirm kodu uygulandı. </div>
+                        }
+
+                        @if (TempData["discountStatus"] is not null && !(bool)TempData["discountStatus"])
+                        {
+                            <div class="text-danger">İndirim kodu geçersiz.</div>
+                        }
+
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="discountApplyInput.Code" />
+                            <div asp-validation-summary="All"></div>
+                            <button type="submit" class="btn btn-outline-secondary"> Uygula </button>
+                        </div>
+                    </form>
                 }
                 else
                 {
