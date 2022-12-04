@@ -10,7 +10,7 @@
 @if (Model.Any())
 {
     <div class="container-fluid content-row">
-        @foreach (var item in Model.Select((course, i) => new { course, i }).ToList())
+        @foreach (var item in Model.Select((Course, i) => new { Course, i }).ToList())
         {
             if (item.i % 3 == 0)
             {
@@ -18,14 +18,15 @@
             }
             <div class="col">
                 <div class="card">
-                    <img src="@item.course.PhotoWithUrl" class="card-img-top" alt="@item.course.Name">
+                    <img src="@item.Course.PhotoWithUrl" class="card-img-top" alt="@item.Course.Name">
                     <div class="card-body">
-                        <h5 class="card-title"> @item.course.Name </h5>
+                        <h5 class="card-title"> @item.Course.Name </h5>
+                        <div class="badge bg-primary"> Kategori: @item.Course.Category.Name </div>
                         <p class="card-text">
-                            @item.course.ShortDescription
+                            @item.Course.ShortDescription
                         </p>
-                        <h4 class="text-primary"> @item.course.Price TL </h4>
-                        <a class="btn btn-success" asp-action="detail" asp-route-id="@item.course.Id"> Detay </a>
+                        <h4 class="text-primary"> @item.Course.Price TL </h4>
+                        <a class="btn btn-success" asp-action="detail" asp-route-id="@item.Course.Id"> Detay </a>
                     </div>
                 </div>
             </div>

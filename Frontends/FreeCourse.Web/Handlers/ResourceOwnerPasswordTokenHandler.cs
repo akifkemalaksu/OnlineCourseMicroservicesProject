@@ -1,7 +1,10 @@
-﻿using FreeCourse.Web.Exceptions;
+﻿using FreeCourse.Shared.Dtos;
+using FreeCourse.Web.Exceptions;
+using FreeCourse.Web.Models.Baskets;
 using FreeCourse.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using System.Net;
 
 namespace FreeCourse.Web.Handlers
 {
@@ -43,7 +46,25 @@ namespace FreeCourse.Web.Handlers
                 throw new UnAuthorizeException();
             }
 
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                return await HandleNotFoundResponse(response);
+            }
+
             return response;
+        }
+
+        private Task<HttpResponseMessage> HandleNotFoundResponse(HttpResponseMessage response)
+        {
+            var responseContentAsJson = response.Content.ReadFromJsonAsync<Response<dynamic>>();
+            if (responseContentAsJson.Result is not null)
+            {
+                response = new HttpResponseMessage();
+                response.StatusCode = HttpStatusCode.OK;
+                response.Content = JsonContent.Create(responseContentAsJson.Result);
+            }
+
+            return Task.FromResult(response);
         }
     }
 }

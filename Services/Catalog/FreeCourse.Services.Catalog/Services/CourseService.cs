@@ -30,10 +30,13 @@ namespace FreeCourse.Services.Catalog.Services
             var courses = await _courseCollection.Find(c => true).ToListAsync();
 
             if (courses.Any())
-                courses.ForEach(async course =>
+            {
+                var getCategoryTasks = courses.Select(async (course) =>
                 {
                     course.Category = await _categoryCollection.Find(c => c.Id.Equals(course.CategoryId)).FirstOrDefaultAsync();
-                });
+                }).ToArray();
+                Task.WaitAll(getCategoryTasks);
+            }
 
             return Response<IEnumerable<CourseDto>>.Success(_mapper.Map<IEnumerable<CourseDto>>(courses), HttpStatusCode.OK);
         }
