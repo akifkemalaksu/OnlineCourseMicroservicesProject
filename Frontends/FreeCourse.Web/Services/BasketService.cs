@@ -35,15 +35,14 @@ namespace FreeCourse.Web.Services
             await CancelApplyDiscountAsync();
             var basket = await GetAsync();
 
-            if (basket is null || basket.DiscountCode is null)
+            if (basket is null)
                 return false;
 
             var hasDiscount = await _discountService.GetDiscountAsync(discountCode);
             if (hasDiscount is null)
                 return false;
 
-            basket.DiscountRate = hasDiscount.Rate;
-            basket.DiscountCode = hasDiscount.Code;
+            basket.ApplyDiscount(hasDiscount.Code, hasDiscount.Rate);
             await SaveOrUpdateAsync(basket);
 
             return true;
@@ -56,7 +55,7 @@ namespace FreeCourse.Web.Services
             if (basket is null || basket.DiscountCode is null)
                 return false;
 
-            basket.DiscountCode = null;
+            basket.CancelDiscount();
             await SaveOrUpdateAsync(basket);
             return true;
         }
@@ -69,11 +68,11 @@ namespace FreeCourse.Web.Services
 
         public async Task<BasketViewModel> GetAsync()
         {
-            var resonse = await _httpClient.GetFromJsonAsync<Response<BasketViewModel>>("baskets");
-            if (resonse is null)
+            var response = await _httpClient.GetFromJsonAsync<Response<BasketViewModel>>("baskets");
+            if (response is null)
                 return null;
 
-            return resonse.Data;
+            return response.Data;
         }
 
         public async Task<bool> RemoveBasketItemAsync(string courseId)

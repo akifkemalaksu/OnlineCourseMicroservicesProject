@@ -1,4 +1,6 @@
-﻿namespace FreeCourse.Web.Models.Baskets
+﻿using System.Drawing;
+
+namespace FreeCourse.Web.Models.Baskets
 {
     public class BasketViewModel
     {
@@ -10,7 +12,7 @@
 
         public bool HasDiscount
         {
-            get => !string.IsNullOrEmpty(DiscountCode);
+            get => !string.IsNullOrEmpty(DiscountCode) && DiscountRate.HasValue;
         }
 
         public BasketViewModel()
@@ -26,7 +28,7 @@
                 {
                     _basketItems.ForEach(x =>
                     {
-                        var discountPrice = x.Price * (DiscountRate.Value / 100);
+                        var discountPrice = x.Price * ((decimal)DiscountRate.Value / 100);
                         x.AppliedDiscount(Math.Round(x.Price - discountPrice, 2));
                     });
 
@@ -37,6 +39,17 @@
             {
                 _basketItems = value;
             }
+        }
+
+        public void ApplyDiscount(string discountCode, int discountRate)
+        {
+            this.DiscountCode = discountCode;
+            this.DiscountRate = discountRate;
+        }
+        public void CancelDiscount()
+        {
+            DiscountCode = null;
+            DiscountRate = null;
         }
     }
 }

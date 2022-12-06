@@ -15,9 +15,9 @@ namespace FreeCourse.Web.Services
 
         public async Task<DiscountViewModel> GetDiscountAsync(string discountCode)
         {
-            var response = await _httpClient.GetFromJsonAsync<Response<DiscountViewModel>>($"getbycode/{discountCode}");
+            var response = await _httpClient.GetFromJsonAsync<Response<DiscountViewModel>>($"discounts/getbycode/{discountCode}");
             //todo loglama işlemi
-            if (!response.IsSuccessful)
+            if (response.Data is null)
                 return null;
 
             return response.Data;
