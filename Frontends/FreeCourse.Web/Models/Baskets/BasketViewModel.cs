@@ -7,7 +7,7 @@ namespace FreeCourse.Web.Models.Baskets
         public string UserId { get; set; }
         public string DiscountCode { get; set; }
         public int? DiscountRate { get; set; }
-        private List<BasketItemViewModel> _basketItems { get; set; }
+        private List<BasketItemViewModel> _basketItems;
         public decimal TotalPrice { get => _basketItems.Sum(x => x.GetCurrentPrice); }
 
         public bool HasDiscount

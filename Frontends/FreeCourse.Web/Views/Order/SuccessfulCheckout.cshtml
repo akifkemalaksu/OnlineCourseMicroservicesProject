@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "SuccessfulCheckout";
+}
+@model OrderCreatedViewModel
+
+<div class="alert alert-info">
+    <p> Sipariş başarıyla tamamlandı. </p>
+    <p> Ödeme no: @Model.OrderId </p>
+</div>
+<a class="btn btn-primary" asp-controller="home" asp-action="index"> Anasayfa </a>
+
