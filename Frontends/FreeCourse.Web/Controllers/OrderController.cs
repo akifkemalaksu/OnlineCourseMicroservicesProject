@@ -57,5 +57,11 @@ namespace FreeCourse.Web.Controllers
         {
             return View(orderCreatedViewModel);
         }
+
+        public async Task<IActionResult> CheckoutHistory()
+        {
+            var order = await _orderService.GetOrderAsync();
+            return View(order);
+        }
     }
 }
