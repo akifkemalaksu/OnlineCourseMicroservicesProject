@@ -1,4 +1,5 @@
-﻿using FreeCourse.Services.Order.Application.Dtos;
+﻿using AutoMapper;
+using FreeCourse.Services.Order.Application.Dtos;
 using FreeCourse.Services.Order.Application.Mapping;
 using FreeCourse.Services.Order.Application.Queries;
 using FreeCourse.Services.Order.Infrastructure;
@@ -17,10 +18,12 @@ namespace FreeCourse.Services.Order.Application.Handlers
     public class GetOrdersByUserIdQueryHandler : IRequestHandler<GetOrdersByUserIdQuery, Response<List<OrderDto>>>
     {
         private readonly OrderDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public GetOrdersByUserIdQueryHandler(OrderDbContext dbContext)
+        public GetOrdersByUserIdQueryHandler(OrderDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<Response<List<OrderDto>>> Handle(GetOrdersByUserIdQuery request, CancellationToken cancellationToken)
@@ -30,7 +33,7 @@ namespace FreeCourse.Services.Order.Application.Handlers
             if (!orders.Any())
                 return Response<List<OrderDto>>.Success(new List<OrderDto>(), HttpStatusCode.OK);
 
-            var orderDtos = ObjectMapper.Mapper.Map<List<OrderDto>>(orders);
+            var orderDtos = _mapper.Map<List<OrderDto>>(orders);
 
             return Response<List<OrderDto>>.Success(orderDtos, HttpStatusCode.OK);
         }

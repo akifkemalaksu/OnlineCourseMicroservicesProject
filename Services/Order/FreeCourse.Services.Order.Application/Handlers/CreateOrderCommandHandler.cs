@@ -1,4 +1,5 @@
-﻿using FreeCourse.Services.Order.Application.Commands;
+﻿using AutoMapper;
+using FreeCourse.Services.Order.Application.Commands;
 using FreeCourse.Services.Order.Application.Dtos;
 using FreeCourse.Services.Order.Application.Mapping;
 using FreeCourse.Services.Order.Domain.OrderAggregate;
@@ -17,15 +18,17 @@ namespace FreeCourse.Services.Order.Application.Handlers
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Response<CreatedOrderDto>>
     {
         private readonly OrderDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CreateOrderCommandHandler(OrderDbContext dbContext)
+        public CreateOrderCommandHandler(OrderDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<Response<CreatedOrderDto>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
-            var newAddress = ObjectMapper.Mapper.Map<Address>(request.Address);
+            var newAddress = _mapper.Map<Address>(request.Address);
 
             Domain.OrderAggregate.Order newOrder = new Domain.OrderAggregate.Order(newAddress, request.BuyerId);
 
