@@ -4,8 +4,10 @@ using FreeCourse.Services.Catalog.Models;
 using FreeCourse.Services.Catalog.Services.Interfaces;
 using FreeCourse.Services.Catalog.Settings;
 using FreeCourse.Shared.Dtos;
+using Mass = MassTransit;
 using MongoDB.Driver;
 using System.Net;
+using FreeCourse.Shared.Messages;
 
 namespace FreeCourse.Services.Catalog.Services
 {
@@ -14,8 +16,9 @@ namespace FreeCourse.Services.Catalog.Services
         private readonly IMongoCollection<Course> _courseCollection;
         private readonly IMongoCollection<Category> _categoryCollection;
         private readonly IMapper _mapper;
+        private readonly Mass.IPublishEndpoint _publishEndpoint;
 
-        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings)
+        public CourseService(IMapper mapper, IDatabaseSettings databaseSettings, Mass.IPublishEndpoint publishEndpoint)
         {
             var client = new MongoClient(databaseSettings.ConnectionString);
             var database = client.GetDatabase(databaseSettings.DatabaseName);
@@ -23,6 +26,7 @@ namespace FreeCourse.Services.Catalog.Services
             _courseCollection = database.GetCollection<Course>(databaseSettings.CourseCollectionName);
             _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
             _mapper = mapper;
+            _publishEndpoint = publishEndpoint; 
         }
 
         public async Task<Response<IEnumerable<CourseDto>>> GetAllAsync()
@@ -66,8 +70,6 @@ namespace FreeCourse.Services.Catalog.Services
                 Task.WaitAll(getCategoryTasks);
             }
 
-
-
             return Response<IEnumerable<CourseDto>>.Success(_mapper.Map<IEnumerable<CourseDto>>(courses), HttpStatusCode.OK);
         }
 
@@ -86,9 +88,16 @@ namespace FreeCourse.Services.Catalog.Services
 
             var result = await _courseCollection.FindOneAndReplaceAsync(c => c.Id.Equals(courseUpdate.Id), updateCourse);
 
-            return result != null ?
-                Response<NoContent>.Success(HttpStatusCode.NoContent) :
-                Response<NoContent>.Fail("Course not found", HttpStatusCode.NotFound);
+            if (result == null)
+                return Response<NoContent>.Fail("Course not found", HttpStatusCode.NotFound);
+
+            await _publishEndpoint.Publish(new CourseNameChangedEvent
+            {
+                CourseId = updateCourse.Id,
+                UpdatedName = updateCourse.Name
+            });
+
+            return Response<NoContent>.Success(HttpStatusCode.NoContent);
         }
 
         public async Task<Response<NoContent>> DeleteAsync(string id)

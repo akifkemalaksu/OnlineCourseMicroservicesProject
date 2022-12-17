@@ -1,6 +1,7 @@
 using FreeCourse.Services.Catalog.Services;
 using FreeCourse.Services.Catalog.Services.Interfaces;
 using FreeCourse.Services.Catalog.Settings;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
@@ -10,6 +11,19 @@ using System.Reflection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddMassTransit(busConfig =>
+{
+    // default port: 5672
+    busConfig.UsingRabbitMq((context, rabbitMqConfig) =>
+    {
+        rabbitMqConfig.Host(builder.Configuration["RabbitMqUrl"], "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+    });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

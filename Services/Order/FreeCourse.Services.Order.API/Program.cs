@@ -15,12 +15,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
-var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-
 builder.Services.AddMassTransit(busConfig =>
 {
     busConfig.AddConsumer<CreateOrderMessageCommandConsumer>();
+    busConfig.AddConsumer<CourseNameChangedEventConsumer>();
 
     // default port: 5672
     busConfig.UsingRabbitMq((context, rabbitMqConfig) =>
@@ -35,8 +33,17 @@ builder.Services.AddMassTransit(busConfig =>
         {
             endpoint.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
         });
+
+        rabbitMqConfig.ReceiveEndpoint("course-name-changed-event-order-service", endpoint =>
+        {
+            endpoint.ConfigureConsumer<CourseNameChangedEventConsumer>(context);
+        });
     });
 });
+
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
