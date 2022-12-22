@@ -1,3 +1,5 @@
+using FreeCourse.Gateway.DelegateHandlers;
+using FreeCourse.Gateway.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -16,7 +18,10 @@ builder.WebHost.ConfigureAppConfiguration((hostingContext, config) =>
     config.AddJsonFile($"configuration.{hostingContext.HostingEnvironment.EnvironmentName.ToLower()}.json").AddEnvironmentVariables();
 });
 
-builder.Services.AddOcelot();
+builder.Services.Configure<TokenExchangeSettings>(builder.Configuration.GetSection("TokenExchangeSettings"));
+
+builder.Services.AddHttpClient<TokenExchangeDelegateHandler>();
+builder.Services.AddOcelot().AddDelegatingHandler<TokenExchangeDelegateHandler>();
 
 var app = builder.Build();
 
