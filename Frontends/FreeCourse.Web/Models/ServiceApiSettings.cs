@@ -2,9 +2,9 @@
 {
     public class ServiceApiSettings
     {
-        public string IdentityBaseUri { get; set; }
-        public string GatewayBaseUri { get; set; }
-        public string PhotoStockUri { get; set; }
+        public string IdentityBaseUrl { get; set; }
+        public string GatewayBaseUrl { get; set; }
+        public string PhotoStockUrl { get; set; }
         public ServiceApi Catalog { get; set; }
         public ServiceApi PhotoStock { get; set; }
         public ServiceApi Basket { get; set; }

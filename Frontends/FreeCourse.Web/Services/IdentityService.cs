@@ -32,7 +32,7 @@ namespace FreeCourse.Web.Services
         {
             var discoveryEndPoints = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
             {
-                Address = _serviceApiSettings.IdentityBaseUri,
+                Address = _serviceApiSettings.IdentityBaseUrl,
                 Policy = new DiscoveryPolicy() { RequireHttps = false }
             });
 
@@ -79,7 +79,7 @@ namespace FreeCourse.Web.Services
         {
             var discoveryEndPoints = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
             {
-                Address = _serviceApiSettings.IdentityBaseUri,
+                Address = _serviceApiSettings.IdentityBaseUrl,
                 Policy = new DiscoveryPolicy() { RequireHttps = false }
             });
 
@@ -104,7 +104,7 @@ namespace FreeCourse.Web.Services
         {
             var discoveryEndPoints = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest()
             {
-                Address = _serviceApiSettings.IdentityBaseUri,
+                Address = _serviceApiSettings.IdentityBaseUrl,
                 Policy = new DiscoveryPolicy() { RequireHttps = false }
             });
 
